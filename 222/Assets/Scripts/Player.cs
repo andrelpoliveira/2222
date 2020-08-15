@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    /*
     private GameController GameController; //cria uma variavel GameController que vamos associar ao script depois no start
 
     public Transform posicaotiro;
@@ -89,13 +90,7 @@ public class Player : MonoBehaviour
         }
 
         andatouch = anda;
-
-        //if (CrossPlatformInputManager.GetButtonDown("Fire1")) //se aperta a tecla ctrl o personagem ataca
-        //{
-        //    PlayerAnimator.SetTrigger("ataca"); //faz a animação ataca
-        //    vaiatacar = true;
-        //}
-
+        
         if (CrossPlatformInputManager.GetButtonDown("botaocima")) //se aperta a tecla ctrl o personagem ataca
         {
             apertoucima = true;
@@ -135,18 +130,13 @@ public class Player : MonoBehaviour
         //iniciomira.eulerAngles = new Vector3(iniciomira.rotation.x, iniciomira.rotation.y, anguloarma);
         if (olhaesquerdo == true)
         {
-            //iniciomira.transform.localRotation = new Vector3(180, 0, 0);
-            //float mirarotaciona = iniciomira.transform.localRotation.x + 180;
-            //iniciomira.transform.localRotation.x = mirarotaciona;
-            //iniciomira.transform.localRotation = new Vector3(mirarotaciona, iniciomira.transform.localScale.y, iniciomira.transform.localScale.z);
             iniciomira.eulerAngles = new Vector3(0, iniciomira.transform.localRotation.y, -anguloarma);
 
-            //iniciomira.transform.rotation = Quaternion.Euler(0, iniciomira.transform.localRotation.y, anguloarma);
         }
         else
         {
             iniciomira.eulerAngles = new Vector3(0, iniciomira.transform.localRotation.y, anguloarma);
-            //iniciomira.transform.rotation = Quaternion.Euler(0, iniciomira.transform.localRotation.y, anguloarma);
+           
         }
 
         PlayerRb.velocity = new Vector2(anda * velocidade, PlayerRb.velocity.y); //acessa a velocidade do playerRb que vai receber o anda vezes a velocidade em X, e a velocidade em Y
@@ -172,39 +162,13 @@ public class Player : MonoBehaviour
     }
 
     void Flip() //criamos uma função que não tem no unity chamada Flip
-    {
-        //anguloarma *= -1;
-        olhaesquerdo = !olhaesquerdo; //olhaesquerdo recebe a diferença de olhaesquerdo
-        //float x = transform.localScale.x * -1; //cria uma variavel x que recebe no unity em transform depois Scale no x e multiplica por menos um (faz o giro do personagem em x)
-        //transform.localScale = new Vector3(x, transform.localScale.y, transform.localScale.z); //acessa o transforma no Scale que vai receber um novo vector x que criamos
+    {       
+        olhaesquerdo = !olhaesquerdo; //olhaesquerdo recebe a diferença de olhaesquerdo        
         Vector3 tempScale = transform.localScale;
         tempScale.x *= -1;
         transform.localScale = tempScale;
 
-        /*if (olhaesquerdo == true)
-        {
-            //iniciomira.transform.localRotation = new Vector3(180, 0, 0);
-            //float mirarotaciona = iniciomira.transform.localRotation.x + 180;
-            //iniciomira.transform.localRotation.x = mirarotaciona;
-            //iniciomira.transform.localRotation = new Vector3(mirarotaciona, iniciomira.transform.localScale.y, iniciomira.transform.localScale.z);
-            iniciomira.transform.localRotation = Quaternion.Euler(180, iniciomira.transform.localRotation.y, iniciomira.transform.localRotation.z);
-        }
-        else
-        {
-            iniciomira.transform.localRotation = Quaternion.Euler(0, iniciomira.transform.localRotation.y, iniciomira.transform.localRotation.z);
-        }
-        */
-
-
-        /*if (olhaesquerdo)
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
-        }
-        */
+        
     }
 
     void Atira()
@@ -222,7 +186,6 @@ public class Player : MonoBehaviour
                 tiroPreFab.GetComponent<Rigidbody2D>().AddForce(iniciomira.transform.right * forcaataque * 15);
             }
         }
-
     }
 
     void Tocapasso()
@@ -251,4 +214,5 @@ public class Player : MonoBehaviour
             CameraTouch.tocounatela = false;
         }
     }
+    */
 }
