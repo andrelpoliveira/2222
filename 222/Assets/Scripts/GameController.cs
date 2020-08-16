@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public Transform playertransform;
 
     public Transform tirotransform;
-    /*
+    
     private Player Player;
        
     public float velocidadeCam;
@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
 
     public Text segundostxt;
     public float segundos = 0;
-
+    /*
     [Header("Audio")]
     public AudioSource sfxsource;
     public AudioSource musicasource;
@@ -35,6 +35,7 @@ public class GameController : MonoBehaviour
     public GameObject musicaoff;
                 
     private CameraTouch CameraTouch;
+    */
 
     // Start is called before the first frame update
     void Start()
@@ -43,20 +44,20 @@ public class GameController : MonoBehaviour
 
         Player = FindObjectOfType(typeof(Player)) as Player;
                
-        CameraTouch = FindObjectOfType(typeof(CameraTouch)) as CameraTouch;
+        //CameraTouch = FindObjectOfType(typeof(CameraTouch)) as CameraTouch;
 
     }
 
     // Update is called once per frame
     void Update()
     {        
-        if (segundos <= 60)
+        if (segundos <= 59) //se segundos for menor que 59 vai somando
         {
             segundos += Time.deltaTime;
             segundostxt.text = segundos.ToString("F0");
         }
         
-        if (segundos >= 60) //se segundos for 60
+        if (segundos >= 59) //se segundos for 59
         {
             segundos = 0;
             segundostxt.text = segundos.ToString("F0");        
@@ -64,7 +65,7 @@ public class GameController : MonoBehaviour
         }              
 
     }
-
+    /*
     void LateUpdate()
     {
         if (tirotransform != null)
