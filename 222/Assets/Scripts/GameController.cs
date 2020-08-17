@@ -8,9 +8,7 @@ public class GameController : MonoBehaviour
     private Camera cam;
 
     public Transform playertransform;
-
-    public Transform tirotransform;
-    
+        
     private Player Player;
        
     public float velocidadeCam;
@@ -65,43 +63,9 @@ public class GameController : MonoBehaviour
         }              
 
     }
-    /*
+    
     void LateUpdate()
-    {
-        if (tirotransform != null)
-        {
-            if (Player.vaiatacar == true && Player.podeatacar == true && CameraTouch.tocounatela == false) //camera do tiro player
-            {
-
-                float posCamArmaX = tirotransform.position.x;
-                float posCamArmaY = tirotransform.position.y;
-
-                if (cam.transform.position.x < LimiteCamEsq.position.x && tirotransform.transform.position.x < LimiteCamEsq.position.x)
-                {
-                    posCamArmaX = LimiteCamEsq.position.x;
-                }
-                else if (cam.transform.position.x > LimiteCamDir.position.x && tirotransform.transform.position.x > LimiteCamDir.position.x)
-                {
-                    posCamArmaX = LimiteCamDir.position.x;
-                }
-
-                if (cam.transform.position.y < LimiteCamBaixo.position.y && tirotransform.transform.position.y < LimiteCamBaixo.position.y)
-                {
-                    posCamArmaY = LimiteCamBaixo.position.y;
-                }
-                else if (cam.transform.position.y > LimiteCamCima.position.y && tirotransform.transform.position.y > LimiteCamCima.position.y)
-                {
-                    posCamArmaY = LimiteCamCima.position.y;
-                }
-
-                Vector3 CamArma = new Vector3(posCamArmaX, posCamArmaY, cam.transform.position.z);
-                cam.transform.position = Vector3.Lerp(cam.transform.position, CamArma, velocidadeCam * Time.deltaTime);
-            }
-        }
-
-        if (Player.vaiatacar == false && vezplayer == true && Player.podeatacar == true && CameraTouch.tocounatela == false) //camera do player
-        {
-
+    {            
             float posCamX = playertransform.position.x;
             float posCamY = playertransform.position.y;
 
@@ -125,13 +89,13 @@ public class GameController : MonoBehaviour
             Vector3 posCam = new Vector3(posCamX, posCamY, cam.transform.position.z);
 
             cam.transform.position = Vector3.Lerp(cam.transform.position, posCam, velocidadeCam * Time.deltaTime);
-        }
+        
         //Debug.Log(vezinimigo);
         //Debug.Log(Player.vaiatacar);
         //Debug.Log(Inimigo.inimigovaiatacar);
         //Debug.Log(Player.podeatacar);                
     }
-
+    /*
     public void Playsfx(AudioClip sfxclip, float volume)
     {
         sfxsource.PlayOneShot(sfxclip, volume);

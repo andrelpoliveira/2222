@@ -8,10 +8,15 @@ public class Player : MonoBehaviour
     private GameController GameController; //cria uma variavel GameController que vamos associar ao script depois no start
 
     public Transform posicaotiro;
-    public GameObject tiro;
+    public GameObject TiroPrefab;
+    public GameObject GranadaPrefab;
 
     public float velocidade; //cria uma variavel publica chamada velocidade (float varia somente números de 0 até infinito)
+    public float ForcaPulo; //cria uma varialvel flutuante de nome jumpForce
 
+    public Transform ChecaColisaoChao;
+    public bool EstaNoChao;
+    
     //private Animator PlayerAnimator; //lê o animator e da seu nome
     private Rigidbody2D PlayerRb; //cria uma variavel privada chamada playerRb que vai ter as propriedas do rigidbody lida no unity
 
@@ -35,6 +40,7 @@ public class Player : MonoBehaviour
     //private CameraTouch CameraTouch;
 
     //public float andatouch;
+
     
     // Start is called before the first frame update
     void Start()
@@ -59,6 +65,7 @@ public class Player : MonoBehaviour
         pontoinicio = iniciomira.position;
         pontofim = fimmira.position;
         direcao = (pontofim - pontoinicio).normalized;
+               
         /*
         float anda = CrossPlatformInputManager.GetAxis("Horizontal"); //variavel chamada anda que recebe o aperto do teclado seta < ou > e faz o movimento Horizontal do personagem
 
@@ -104,7 +111,12 @@ public class Player : MonoBehaviour
 
         barraforca.SetHealth(Mathf.RoundToInt(forcaataque));
         */
+    }
 
+    void FixedUpdate()
+    {        
+            EstaNoChao = Physics2D.OverlapCircle(ChecaColisaoChao.position, 0.02f);
+        
     }
 
     void Flip() //criamos uma função que não tem no unity chamada Flip
@@ -114,10 +126,22 @@ public class Player : MonoBehaviour
         tempScale.x *= -1;
         transform.localScale = tempScale;        
     }
-    
+
+    public void Pular()
+    {
+        if (EstaNoChao == true)
+        {
+            //GameController.playSFX(GameController.sfxJump, 0.5f);
+            PlayerRb.AddForce(new Vector2(0, ForcaPulo));
+
+        }
+        //ApertouPulo = true;
+    }
+   
+
     void AtiraBomba()
     {       
-            GameObject tiroPreFab = Instantiate(tiro, posicaotiro.position, tiro.transform.localRotation);
+            GameObject tiroPreFab = Instantiate(TiroPrefab, posicaotiro.position, TiroPrefab.transform.localRotation);
 
             if (olhaesquerdo)
             {
@@ -147,7 +171,7 @@ public class Player : MonoBehaviour
             //vaiatacar = true;
            // apertou = false;
 
-            //CameraTouch.tocounatela = false;        
+           //CameraTouch.tocounatela = false;        
     }
     
 }
