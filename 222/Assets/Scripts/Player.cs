@@ -16,107 +16,159 @@ public class Player : MonoBehaviour
 
     public Transform ChecaColisaoChao;
     public bool EstaNoChao;
-    
-    //private Animator PlayerAnimator; //lê o animator e da seu nome
+        
     private Rigidbody2D PlayerRb; //cria uma variavel privada chamada playerRb que vai ter as propriedas do rigidbody lida no unity
 
     public bool olhaesquerdo; //cria uma variavel public de verdadeiro ou falso(bool) chamdo olhaesquerdo
-      
-    public int maxHealth = 100;
-    public int currentHealth;
-    //public BarraVida BarraVida;
+    public Joystick joystick;    
+                
+    public float anguloarma = 50;     
         
-    public float anguloarma = 50;
-        
-    public float forcabomba = 20;
-    //public BarraVida barraforca;
-    
     public Transform iniciomira;
     public Transform fimmira;
     private Vector2 pontoinicio;
     private Vector2 pontofim;
     private Vector2 direcao;
-        
-    //private CameraTouch CameraTouch;
 
-    //public float andatouch;
+    public float forcabomba = 20;
 
-    
+    public int ForcaBombamax = 60;
+    public int currentVida;
+
+    public BarraVida barravida;
+    public GameObject BarraForca;
+
+    public bool podediminuir = false;
+    public bool apertou = false;
+
+    public Transform iniciomiratiro;
+    public Transform fimmiratiro;
+    private Vector2 pontoiniciotiro;
+    private Vector2 pontofimtiro;
+    private Vector2 direcaotiro;
+    public float forcatiro = 20;
+    public float angulotiro = 0;
+
+    public float valorjoystickanda;
+    public float valorjoystickvertical;
+
+    public float anda; //variavel chamada anda que recebe o aperto do teclado seta < ou > e faz o movimento Horizontal do personagem
+
     // Start is called before the first frame update
     void Start()
-    {       
+    {            
 
-        //PlayerAnimator = GetComponent<Animator>(); //inicializa o animator e associa ao nome PlayerAnimator
         PlayerRb = GetComponent<Rigidbody2D>(); //inicializa e associa o rigidbody ao playerRb
 
         GameController = FindObjectOfType(typeof(GameController)) as GameController; //procura o outro script chamado GameController e incializa
         GameController.playertransform = this.transform; //vai pegar as informações do transform do player e associar ao playertransform do GameController
 
-        currentHealth = maxHealth;
-        //BarraVida.SetMaxHealth(maxHealth);
-        //barraforca.SetMaxHealth(100);
-
-        //CameraTouch = FindObjectOfType(typeof(CameraTouch)) as CameraTouch;
+        currentVida = ForcaBombamax;
+        barravida.SetVidaMax(ForcaBombamax);
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         pontoinicio = iniciomira.position;
         pontofim = fimmira.position;
         direcao = (pontofim - pontoinicio).normalized;
-               
-        /*
-        float anda = CrossPlatformInputManager.GetAxis("Horizontal"); //variavel chamada anda que recebe o aperto do teclado seta < ou > e faz o movimento Horizontal do personagem
+
+        pontoiniciotiro = iniciomiratiro.position;
+        pontofimtiro = fimmiratiro.position;
+        direcaotiro = (pontofimtiro - pontoiniciotiro).normalized;
+
+
+        anda = joystick.Horizontal;
+
+        valorjoystickanda = anda;
 
         if (anda > 0 && olhaesquerdo == true) //Se anda é maior que 0 e a caixa de marcar do unity for verdadeiro faz a função abaixo Flip
         {
-            Flip(); //chama a função Flip criada            
+            Flip(); //chama a função Flip criada             
         }
 
         if (anda < 0 && olhaesquerdo == false)
         {
-            Flip();
+            Flip();            
+        }
+        if(anda == 0)
+        {
+            angulotiro = 0;
+        }
+        if(anda >= .2f || anda <= -.2f)
+        {
+            angulotiro = 0;
+        }       
+               
+        /*
+            float verticaljoystick = joystick.Vertical;
+        valorjoystickvertical = verticaljoystick;
+
+            if (verticaljoystick >= .8f)
+            {
+                angulotiro = 90;
+            }
+
+            if (verticaljoystick <= -.8f)
+            {
+                angulotiro = -90;
+            }
+
+        if (verticaljoystick > .2f && verticaljoystick < .8f)
+        {
+            angulotiro = 45;
+        }
+        if (verticaljoystick < -.2f && verticaljoystick > -.8f)
+        {
+            angulotiro = 315;
         }
 
-        andatouch = anda;
-                     
-        
+        */
         if (olhaesquerdo == true)
         {
             iniciomira.eulerAngles = new Vector3(0, iniciomira.transform.localRotation.y, -anguloarma);
+            iniciomiratiro.eulerAngles = new Vector3(0, iniciomiratiro.transform.localRotation.y, -angulotiro);
         }
         else
         {
-            iniciomira.eulerAngles = new Vector3(0, iniciomira.transform.localRotation.y, anguloarma);           
+            iniciomira.eulerAngles = new Vector3(0, iniciomira.transform.localRotation.y, anguloarma);
+            iniciomiratiro.eulerAngles = new Vector3(0, iniciomiratiro.transform.localRotation.y, angulotiro);
         }
-
-        PlayerRb.velocity = new Vector2(anda * velocidade, PlayerRb.velocity.y); //acessa a velocidade do playerRb que vai receber o anda vezes a velocidade em X, e a velocidade em Y
-        PlayerAnimator.SetInteger("anda", (int)anda); //faz a animação anda, mas converte para inteiro devido no unity ser configurado como int e na programação é float
-
         
+        PlayerRb.velocity = new Vector2(anda * velocidade, PlayerRb.velocity.y); //acessa a velocidade do playerRb que vai receber o anda vezes a velocidade em X, e a velocidade em Y
+       
+        /*
         if (currentHealth <= 0)
         {
             PlayerAnimator.SetTrigger("morrendo");
-            transform.gameObject.SetActive(false);
-            GameController.currentstate = gamestate.FIMJOGO;
-            GameController.painelfim.SetActive(true);
-            GameController.pausatempo = true;
+            transform.gameObject.SetActive(false);            
+            GameController.painelfim.SetActive(true);            
         }
-
-        if (apertou == true && forcaataque < 100 && podeatacar == true)
-        {
-            forcaataque += 20 * Time.deltaTime;
-        }
-
-        barraforca.SetHealth(Mathf.RoundToInt(forcaataque));
         */
+        if (apertou == true && forcabomba < 60 && podediminuir == false)
+        {
+            forcabomba += 25 * Time.deltaTime;
+            if (forcabomba >= 60)
+            {
+                podediminuir = true;
+            }
+        }
+        if (apertou == true && podediminuir == true)
+        {
+            forcabomba += -25 * Time.deltaTime;
+            if (forcabomba <= 20)
+            {
+                podediminuir = false;
+            }
+        }
+        barravida.SetVida(Mathf.RoundToInt(forcabomba));
+
     }
 
-    void FixedUpdate()
-    {        
-            EstaNoChao = Physics2D.OverlapCircle(ChecaColisaoChao.position, 0.02f);
-        
+    private void FixedUpdate()
+    {
+        EstaNoChao = Physics2D.OverlapCircle(ChecaColisaoChao.position, 0.02f);
     }
 
     void Flip() //criamos uma função que não tem no unity chamada Flip
@@ -134,24 +186,36 @@ public class Player : MonoBehaviour
             //GameController.playSFX(GameController.sfxJump, 0.5f);
             PlayerRb.AddForce(new Vector2(0, ForcaPulo));
 
-        }
-        //ApertouPulo = true;
+        }        
     }
    
 
     void AtiraBomba()
     {       
-            GameObject tiroPreFab = Instantiate(TiroPrefab, posicaotiro.position, TiroPrefab.transform.localRotation);
-
+            GameObject bombaPreFab = Instantiate(GranadaPrefab, posicaotiro.position, GranadaPrefab.transform.localRotation);
+        
             if (olhaesquerdo)
             {
-                tiroPreFab.GetComponent<Rigidbody2D>().AddForce(-iniciomira.transform.right * forcabomba * 15);
+                bombaPreFab.GetComponent<Rigidbody2D>().AddForce(-iniciomira.transform.right * forcabomba * 15);
             }
             else
             {
-                tiroPreFab.GetComponent<Rigidbody2D>().AddForce(iniciomira.transform.right * forcabomba * 15);
-            }
-        
+                bombaPreFab.GetComponent<Rigidbody2D>().AddForce(iniciomira.transform.right * forcabomba * 15);
+            }        
+    }
+
+    void AtiraTiro()
+    {
+        GameObject tiroPreFab = Instantiate(TiroPrefab, posicaotiro.position, TiroPrefab.transform.localRotation);
+
+        if (olhaesquerdo)
+        {
+            tiroPreFab.GetComponent<Rigidbody2D>().AddForce(-iniciomiratiro.transform.right * forcatiro * 15);
+        }
+        else
+        {
+            tiroPreFab.GetComponent<Rigidbody2D>().AddForce(iniciomiratiro.transform.right * forcatiro * 15);
+        }
     }
     /*
     void Tocapasso()
@@ -159,19 +223,26 @@ public class Player : MonoBehaviour
         GameController.Playsfx(GameController.sfxpasso[Random.Range(0, GameController.sfxpasso.Length)], 0.3f);
     }
     */
-    public void Apertouataque()
-    {        
-           //apertou = true;         
-        
+    public void Apertougranada()
+    {
+        BarraForca.SetActive(true);
+        apertou = true;        
     }
 
-    public void Soltouataque()
+    public void Soltougranada()
     {       
             //PlayerAnimator.SetTrigger("ataca"); //faz a animação ataca
             //vaiatacar = true;
-           // apertou = false;
-
-           //CameraTouch.tocounatela = false;        
+        apertou = false;
+        AtiraBomba();
+        forcabomba = 20;
+        barravida.SetVida(Mathf.RoundToInt(forcabomba));
+        BarraForca.SetActive(false);
     }
-    
+
+    public void Atirou()
+    {
+        AtiraTiro();
+    }
+
 }

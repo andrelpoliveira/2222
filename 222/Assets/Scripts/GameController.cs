@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
     }
     
     void LateUpdate()
-    {            
+    {        
             float posCamX = playertransform.position.x;
             float posCamY = playertransform.position.y;
 
@@ -86,14 +86,15 @@ public class GameController : MonoBehaviour
             {
                 posCamY = LimiteCamCima.position.y;
             }
-            Vector3 posCam = new Vector3(posCamX, posCamY, cam.transform.position.z);
+            Vector3 posCam = new Vector3(posCamX, posCamY + 2, cam.transform.position.z);
 
             cam.transform.position = Vector3.Lerp(cam.transform.position, posCam, velocidadeCam * Time.deltaTime);
-        
+        /*
         //Debug.Log(vezinimigo);
         //Debug.Log(Player.vaiatacar);
         //Debug.Log(Inimigo.inimigovaiatacar);
-        //Debug.Log(Player.podeatacar);                
+        //Debug.Log(Player.podeatacar);   
+        */
     }
     /*
     public void Playsfx(AudioClip sfxclip, float volume)
